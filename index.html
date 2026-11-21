@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GPU Graph Layout</title>
+    <meta name="description" content="Force-directed graph layout on the GPU with WebGPU compute and render pipelines." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside id="panel">
+        <header>
+          <h1>GPU Graph Layout</h1>
+          <p class="sub">Fruchterman–Reingold on WebGPU compute shaders, rendered straight from GPU buffers.</p>
+        </header>
+
+        <section>
+          <div class="seg" role="radiogroup" aria-label="Engine">
+            <button id="engine-gpu" class="active" data-engine="gpu">GPU · WebGPU</button>
+            <button id="engine-cpu" data-engine="cpu">CPU · JS + Canvas</button>
+          </div>
+          <label>Graph
+            <select id="graph-type">
+              <option value="barabasi-albert">Barabási–Albert (scale-free)</option>
+              <option value="stochastic-block">Stochastic block (communities)</option>
+              <option value="erdos-renyi">Erdős–Rényi (random)</option>
+              <option value="grid">Grid lattice</option>
+              <option value="snap-facebook">SNAP Facebook ego network</option>
+            </select>
+          </label>
+          <label>Nodes
+            <select id="node-count">
+              <option>500</option>
+              <option>1000</option>
+              <option>2000</option>
+              <option selected>5000</option>
+              <option>10000</option>
+              <option>20000</option>
+              <option>50000</option>
+              <option>100000</option>
+            </select>
+          </label>
+          <label>Iterations per frame <output id="iters-out">2</output>
+            <input id="iters" type="range" min="1" max="10" value="2" />
+          </label>
+          <label id="edge-mode-wrap">Edge forces (GPU)
+            <select id="edge-mode">
+              <option value="0">CSR gather, no atomics</option>
+              <option value="1">Edge-parallel, fixed-point atomics</option>
+            </select>
+          </label>
+          <div class="row">
+            <button id="btn-generate" class="primary">Generate</button>
+            <button id="btn-pause">Pause</button>
+            <button id="btn-reheat">Reheat</button>
+            <button id="btn-fit">Fit</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Live stats</h2>
+          <dl id="stats"></dl>
+        </section>
+
+        <section>
+          <h2>Tools</h2>
+          <div class="row">
+            <button id="btn-verify">Verify GPU vs CPU</button>
+            <button id="btn-bench">Run benchmark</button>
+          </div>
+          <p id="tool-status" class="muted"></p>
+          <div id="tool-output"></div>
+        </section>
+
+        <footer class="muted">
+          <span id="adapter">Detecting GPU…</span>
+        </footer>
+      </aside>
+
+      <main id="stage">
+        <canvas id="gpu-canvas"></canvas>
+        <canvas id="cpu-canvas" hidden></canvas>
+        <div id="message" hidden></div>
+        <div id="hint">Scroll to zoom · drag to pan · double-click to fit</div>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "gpu-graph-processing",
+  "version": "1.0.0",
+  "description": "GPU-accelerated force-directed graph layout engine built on WebGPU compute + render pipelines (WGSL).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.15.0",
+    "vite": "^7.1.0",
+    "vitest": "^4.1.12"
+  }
+}
